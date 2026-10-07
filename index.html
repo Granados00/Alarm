@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alarma Pro - Sistema Inteligente</title>
+  <!-- Google Fonts para tipografía premium -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main class="card">
+    <div class="clock-container">
+      <div id="clock" aria-live="polite">00:00:00</div>
+      <div id="date">cargando fecha...</div>
+    </div>
+
+    <div class="alarm-config">
+      <div class="form-group-row">
+        <div class="form-group">
+          <label for="time">🕒 Hora</label>
+          <input type="time" id="time">
+        </div>
+
+        <div class="form-group">
+          <label for="soundType">🎵 Sonido</label>
+          <div class="sound-select-row">
+            <select id="soundType">
+              <option value="beep">Beep Digital ⚡</option>
+              <option value="siren">Sirena Policial 🚨</option>
+              <option value="retro">Melodía Retro 👾</option>
+              <option value="scifi">Láser Espacial 🚀</option>
+              <option value="zen">Campanas Zen 🧘</option>
+              <option value="bird">Pájaro Digital 🐦</option>
+              <option value="pulse">Pulso Cósmico 🌌</option>
+              <option value="nuclear">Alerta Nuclear ☢️</option>
+            </select>
+            <button type="button" class="btn-icon" onclick="testSound()" title="Probar sonido" aria-label="Probar sonido seleccionado">🔊</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Selector de Modo de Programación -->
+      <div class="form-group">
+        <label>📅 Tipo de Programación</label>
+        <div class="schedule-type-toggle">
+          <button type="button" class="toggle-btn active" id="btnRepeat" onclick="setScheduleMode('repeat')">Repetir Días</button>
+          <button type="button" class="toggle-btn" id="btnOnce" onclick="setScheduleMode('once')">Una Fecha</button>
+        </div>
+      </div>
+
+      <!-- Selector de Días Recurrentes -->
+      <div id="repeatDaysContainer" class="form-group">
+        <label>📆 Selecciona los Días</label>
+        <div class="days-row">
+          <button type="button" class="day-btn" data-day="1" onclick="toggleDaySelection(this)">L</button>
+          <button type="button" class="day-btn" data-day="2" onclick="toggleDaySelection(this)">M</button>
+          <button type="button" class="day-btn" data-day="3" onclick="toggleDaySelection(this)">M</button>
+          <button type="button" class="day-btn" data-day="4" onclick="toggleDaySelection(this)">J</button>
+          <button type="button" class="day-btn" data-day="5" onclick="toggleDaySelection(this)">V</button>
+          <button type="button" class="day-btn" data-day="6" onclick="toggleDaySelection(this)">S</button>
+          <button type="button" class="day-btn" data-day="0" onclick="toggleDaySelection(this)">D</button>
+        </div>
+      </div>
+
+      <!-- Selector de Fecha Única -->
+      <div id="onceDateContainer" class="form-group" style="display: none;">
+        <label for="alarmDate">📅 Fecha Específica</label>
+        <input type="date" id="alarmDate">
+      </div>
+
+      <button class="btn-primary" onclick="setAlarm()">Guardar Alarma</button>
+    </div>
+
+    <!-- Lista de alarmas configuradas -->
+    <div class="alarms-list-wrapper">
+      <h2>🔔 Mis Alarmas</h2>
+      <div id="alarmsList" class="alarms-list">
+        <!-- Renderizado dinámico desde JS -->
+        <p class="empty-list-msg">No hay alarmas configuradas</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Pantalla de alarma activa (Challenge Screen) -->
+  <section id="alarmScreen" aria-modal="true" role="dialog" aria-labelledby="alarmTitle">
+    <div class="alarm-box">
+      <h2 id="alarmTitle" class="alarm-title">🚨 ¡HORA DE DESPERTAR! 🚨</h2>
+      
+      <div class="game-container">
+        <p class="game-instruction">Escribe la frase exactamente igual para apagar la alarma:</p>
+        <div id="question" class="question-text">Frase de ejemplo</div>
+        
+        <div class="input-row">
+          <input type="text" id="answer" placeholder="Escribe aquí..." autocomplete="off">
+          <button onclick="checkAnswer()" class="btn-verify">Verificar</button>
+        </div>
+      </div>
+
+      <!-- Barra de progreso de rondas -->
+      <div class="progress-wrapper">
+        <div class="progress-bar-bg">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
+        <p id="progressCounter">Ronda 0 de 3</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sonido fallback clásico -->
+  <audio id="sound" loop>
+    <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3">
+  </audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
